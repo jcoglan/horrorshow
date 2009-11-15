@@ -1,0 +1,148 @@
+module Horrorshow
+  grammar Literals
+    
+    include Whitespace
+    
+    rule literal
+      null_literal / boolean_literal / numeric_literal / string_literal
+    end
+    
+    rule null_literal
+      "null"
+    end
+    
+    rule boolean_literal
+      "true" / "false"
+    end
+    
+    rule numeric_literal
+      decimal_literal / hex_integer_literal
+    end
+    
+    rule decimal_literal
+      decimal_integer_literal "." decimal_digits? exponent_part? /
+      "." decimal_digits exponent_part? /
+      decimal_integer_literal exponent_part?
+    end
+    
+    rule decimal_integer_literal
+      "0" / non_zero_digit decimal_digits?
+    end
+    
+    rule decimal_digits
+      decimal_digit decimal_digits?
+    end
+    
+    rule non_zero_digit
+      "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9"
+    end
+    
+    rule decimal_digit
+      "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9"
+    end
+    
+    rule exponent_part
+      exponent_indicator signed_integer
+    end
+    
+    rule exponent_indicator
+      "e" / "E"
+    end
+    
+    rule signed_integer
+      decimal_digits / "+" decimal_digits / "-" decimal_digits
+    end
+    
+    rule hex_integer_literal
+      "0x" hex_digit / "0X" hex_digit / hex_integer_literal hex_digit
+    end
+    
+    rule hex_digit
+      [0-9a-fA-F]
+    end
+    
+    rule string_literal
+      "\"" double_string_characters? "\"" /
+      "'" single_string_characters? "'"
+    end
+    
+    rule double_string_characters
+      double_string_character double_string_characters?
+    end
+    
+    rule single_string_characters
+      single_string_character single_string_characters?
+    end
+    
+    rule double_string_character
+      (!("\"" / "\\" / line_terminator) .) /
+      "\\" escape_sequence
+    end
+    
+    rule single_string_character
+      (!("'" / "\\" / line_terminator) .) /
+      "\\" escape_sequence
+    end
+    
+    rule escape_sequence
+      character_escape_sequence /
+      "0" !decimal_digit /
+      hex_escape_sequence /
+      unicode_escape_sequence
+    end
+    
+    rule character_escape_sequence
+      single_escape_character / non_escape_character
+    end
+    
+    rule single_escape_character
+      "'" / "\"" / "\\" / "b" / "f" / "n" / "r" / "t" / "v"
+    end
+    
+    rule escape_character
+      single_escape_character / decimal_digit / "x" / "u"
+    end
+    
+    rule hex_escape_sequence
+      "x" hex_digit hex_digit
+    end
+    
+    rule unicode_escape_sequence
+      "u" hex_digit hex_digit hex_digit hex_digit
+    end
+    
+    rule regular_expression_literal
+      "/" regular_expression_body "/" regular_expression_flags
+    end
+    
+    rule regular_expression_body
+      regular_expression_first_char regular_expression_chars
+    end
+    
+    rule regular_expression_chars
+      regular_expression_char regular_expression_chars / ""
+    end
+    
+    rule regular_expression_first_char
+      (![\*\/\\] non_terminator) / backslash_sequence
+    end
+    
+    rule regular_expression_char
+      (![\/\\] non_terminator) / backslash_sequence
+    end
+    
+    rule backslash_sequence
+      "\\" non_terminator
+    end
+    
+    rule non_terminator
+      (!line_terminator .)
+    end
+    
+    rule regular_expression_flags
+      identifier_part regular_expression_flags / ""
+    end
+    
+  end
+end
+

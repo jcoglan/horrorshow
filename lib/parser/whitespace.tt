@@ -1,0 +1,14 @@
+module Horrorshow
+  grammar Whitespace
+    
+    rule white_space
+      [\n\t\s]
+    end
+    
+    rule line_terminator
+      "\n"
+    end
+    
+  end
+end
+

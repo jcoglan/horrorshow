@@ -1,0 +1,83 @@
+module Horrorshow
+  grammar JavaScript
+    
+    include Whitespace
+    include Comments
+    include Literals
+    
+    rule input_element_div
+      white_space / line_terminator / comment / token / div_puncatuator
+    end
+    
+    rule input_element_reg_exp
+      white_space / line_terminator / comment / token / regular_expression_literal
+    end
+    
+    rule token
+      reserved_word / identifier / punctuator / numeric_literal / string_literal
+    end
+    
+    rule reserved_word
+      keyword / future_reserved_word / null_literal / boolean_literal
+    end
+    
+    rule keyword
+      "break" / "case" / "catch" / "continue" / "default" / "delete" / "do" /
+      "else" / "finally" / "for" / "function" / "if" / "in" / "instanceof" /
+      "new" / "return" / "switch" / "this" / "throw" / "try" / "typeof" /
+      "var" / "void" / "while" / "with"
+    end
+    
+    rule future_reserved_word
+      "abstract" / "boolean" / "byte" / "char" / "class" / "const" / "debugger" / "double" /
+      "enum" / "export" / "extends" / "final" / "float" / "goto" / "implements" / "import" /
+      "int" / "interface" / "long" / "native" / "package" / "private" / "protected" / "public" /
+      "short" / "static" / "super" / "synchronized" / "throws" / "transient" / "volatile"
+    end
+    
+    rule identifier
+      (!reserved_word identifier_name)
+    end
+    
+    rule identifier_name
+      identifier_start / identifier_name identifier_part
+    end
+    
+    rule identifier_start
+      unicode_letter / "$" / "_" / unicode_escape_sequence
+    end
+    
+    rule identifier_part
+      identifier_start / unicode_digit / unicode_escape_sequence
+    end
+    
+    rule unicode_letter
+      [A-Z] / [a-z]
+    end
+    
+    rule unicode_digit
+      [0-9]
+    end
+    
+    rule unicode_escape_sequence
+      "\\u" hex_digit hex_digit hex_digit hex_digit
+    end
+    
+    rule punctuator
+      "{" / "}" / "(" / ")" / "[" / "]" /
+      "." / ";" / "," / "<" / ">" / "<=" /
+      ">=" / "==" / "!=" / "===" / "!==" /
+      "+" / "-" / "*" / "%" / "++" / "--" /
+      "<<" / ">>" / ">>>" / "&" / "|" / "^" /
+      "!" / "~" / "&&" / "||" / "?" / ":" /
+      "=" / "+=" / "-=" / "*=" / "%=" / "<<=" /
+      ">>=" / ">>>=" / "&=" / "|=" / "^="
+    end
+    
+    rule div_punctuator
+      "/" / "/="
+    end
+    
+  end
+end
+

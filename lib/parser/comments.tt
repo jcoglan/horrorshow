@@ -1,0 +1,46 @@
+module Horrorshow
+  grammar Comments
+    
+    include Whitespace
+    
+    rule comment
+      multi_line_comment / single_line_comment
+    end
+    
+    rule multi_line_comment
+      "/*" multi_line_comment_chars? "*/"
+    end
+    
+    rule multi_line_comment_chars
+      multi_line_not_asterisk_char multi_line_comment_chars? /
+      "*" post_asterisk_comment_chars?
+    end
+    
+    rule post_asterisk_comment_chars
+      multi_line_not_forward_slash_or_asterisk_char multi_line_comment_chars? /
+      "*" post_asterisk_comment_chars?
+    end
+    
+    rule multi_line_not_asterisk_char
+      (!"*" .)
+    end
+    
+    rule multi_line_not_forward_slash_or_asterisk_char
+      (![\/\*] .)
+    end
+    
+    rule single_line_comment
+      "//" single_line_comment_chars?
+    end
+    
+    rule single_line_comment_chars
+      single_line_comment_char single_line_comment_chars?
+    end
+    
+    rule single_line_comment_char
+      (!line_terminator .)
+    end
+    
+  end
+end
+
