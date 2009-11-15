@@ -1,0 +1,7 @@
+.autotest
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+lib/horrorshow.rb
+test/test_horrorshow.rb
